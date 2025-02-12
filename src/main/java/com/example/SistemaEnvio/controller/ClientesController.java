@@ -3,15 +3,16 @@ package com.example.SistemaEnvio.controller;
 import com.example.SistemaEnvio.entity.Clientes;
 import com.example.SistemaEnvio.service.ClientesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
-
+//@CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/clientes")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/api/v1")
+
 
 public class ClientesController {
 
@@ -21,29 +22,29 @@ public class ClientesController {
         this.clientesService = clientesService;
     }
 
-    @GetMapping
+    @GetMapping("/clientes")
     public List<Clientes> getAllClientes(){
         return clientesService.getAllClientes();
     }
 
-    @GetMapping("/{id}")
-    public Optional<Clientes> getClientesById(@PathVariable Long id){
+    @GetMapping("/clientes/{id}")
+    public ResponseEntity<Clientes> getClientesById(@PathVariable Long id){
         return clientesService.getClientesById(id);
     }
-    @PostMapping
+    @PostMapping("/clientes")
     public Clientes createClientes(@RequestBody Clientes clientes){
         return clientesService.saveClientes(clientes);
     }
 
-    @PutMapping("/{id}")
-    public Clientes updateClientes(@PathVariable Long id, @RequestBody Clientes clientes){
-        clientes.setId(id);
-        return clientesService.saveClientes(clientes);
+    @PutMapping("/clientes/{id}")
+    public ResponseEntity<Clientes> putClientes(@PathVariable Long id, @RequestBody Clientes clientes){
+
+        return clientesService.updateClientes(id,clientes);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteClientes(@PathVariable Long id){
-        clientesService.deleteClientes(id);
+    @DeleteMapping("clientes/{id}")
+    public ResponseEntity<Map<String,Boolean>> deleteClientes(@PathVariable Long id){
+        return clientesService.deleteClientes(id);
     }
 
 }
